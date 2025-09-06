@@ -13,6 +13,6 @@ func RunSurfaceDiscovery(
 	knownSurface *surface.Surface,
 	scope *surface.Surface,
 	exclusions *surface.Surface,
-){
+) {
 
 }

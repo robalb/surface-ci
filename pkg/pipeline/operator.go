@@ -1,5 +1,5 @@
 package pipeline
 
-type Operator interface{
+type Operator interface {
 	//TODO
 }

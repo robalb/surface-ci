@@ -8,9 +8,6 @@ import (
 	"strings"
 )
 
-
-
-
 func ValidateDomain(domain string) error {
 	if domain == "" {
 		return fmt.Errorf("Domain cannot be empty")

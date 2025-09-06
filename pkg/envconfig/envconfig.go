@@ -12,15 +12,15 @@ import (
 
 type EnvConfig struct {
 	ConfigFolder string `env:"CONFIG_FOLDER"`
-	DataFolder string `env:"DATA_FOLDER"`
-	SecretTest string `env:"SECRET_TEST" sensitive:"true"`
+	DataFolder   string `env:"DATA_FOLDER"`
+	SecretTest   string `env:"SECRET_TEST" sensitive:"true"`
 }
 
-func defaultEnvConfig() EnvConfig{
-	return EnvConfig{ 
+func defaultEnvConfig() EnvConfig {
+	return EnvConfig{
 		ConfigFolder: "./",
-		DataFolder: "./data",
-		SecretTest: "",
+		DataFolder:   "./data",
+		SecretTest:   "",
 	}
 }
 
@@ -63,4 +63,3 @@ func New(
 
 	return c, nil
 }
-

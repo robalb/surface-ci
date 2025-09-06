@@ -10,25 +10,25 @@ import (
 )
 
 type knownSurfaceFileData struct {
-    KnownSurface surface.Surface `yaml:"known_surface"`
+	KnownSurface surface.Surface `yaml:"known_surface"`
 }
 
-func parseKnownSurface(filePath string) (*knownSurfaceFileData, error){
-    data, err := os.ReadFile(filePath)
-    if err != nil {
-        return nil, fmt.Errorf("Failed to read scope file at %s: %w", filePath, err)
-    }
+func parseKnownSurface(filePath string) (*knownSurfaceFileData, error) {
+	data, err := os.ReadFile(filePath)
+	if err != nil {
+		return nil, fmt.Errorf("Failed to read scope file at %s: %w", filePath, err)
+	}
 
-    surface := knownSurfaceFileData{
-        KnownSurface: surface.Surface{
-            Domains: []string{},
-            IPs:     []string{},
-            URLs:    []string{},
-        },
-    }
-    if err := yaml.Unmarshal(data, &surface); err != nil {
+	surface := knownSurfaceFileData{
+		KnownSurface: surface.Surface{
+			Domains: []string{},
+			IPs:     []string{},
+			URLs:    []string{},
+		},
+	}
+	if err := yaml.Unmarshal(data, &surface); err != nil {
 		return nil, fmt.Errorf("Failed to parse known-surface file at %s: Invalid Syntax: %w", filePath, err)
-    }
+	}
 
 	s := surface.KnownSurface
 
@@ -53,10 +53,6 @@ func parseKnownSurface(filePath string) (*knownSurfaceFileData, error){
 		}
 	}
 
-
 	return &surface, nil
 
 }
-
-
-

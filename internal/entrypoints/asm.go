@@ -13,7 +13,6 @@ import (
 	"github.com/robalb/tinyasm/pkg/pipeline"
 )
 
-
 func Asm(
 	ctx context.Context,
 	stdout io.Writer,
@@ -30,12 +29,11 @@ func Asm(
 	// Initialize logging.
 	// This program will run in Containerize environemnts or CI pipelines, where
 	// log output must contain human-readable, useful information about the
-	// program runtime. 
-	// The first steps here will therefore focus on logging contextual information on 
+	// program runtime.
+	// The first steps here will therefore focus on logging contextual information on
 	// what program is starting, the version, and the configuration parameters in use
 	logger := slog.New(slog.NewTextHandler(stdout, nil))
 	logger.Info("Starting TinyASM")
-
 
 	// Read the configuration that can be set in ENV variables
 	envConfig, err := envconfig.New(args, getenv, logger)
@@ -46,7 +44,6 @@ func Asm(
 	logger.Info("Config folder", "path", envConfig.ConfigFolder)
 	logger.Info("Data folder", "path", envConfig.DataFolder)
 
-
 	// Read all the configuration files, based on the path set in the ENV variables
 	configFiles, err := configfiles.New(envConfig.ConfigFolder)
 	if err != nil {
@@ -54,7 +51,6 @@ func Asm(
 		return nil
 	}
 	logger.Info("file configuration values", "summary", configFiles.Summary())
-
 
 	// Read all the data files, based on the path set in the ENV variables
 	dataFiles, fileMissing, err := datafiles.New(envConfig.DataFolder)
@@ -74,7 +70,7 @@ func Asm(
 		&dataFiles.KnownSurface,
 		&configFiles.Scope,
 		&configFiles.Exclusions,
-		)
+	)
 
 	return nil
 }

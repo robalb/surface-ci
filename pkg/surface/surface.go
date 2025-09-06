@@ -5,4 +5,3 @@ type Surface struct {
 	IPs     []string `yaml:"ips"`
 	URLs    []string `yaml:"urls"`
 }
-

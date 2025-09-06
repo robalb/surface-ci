@@ -3,24 +3,23 @@ package datafiles
 
 import (
 	"fmt"
+	"github.com/robalb/tinyasm/pkg/surface"
 	"os"
 	"path"
-	"github.com/robalb/tinyasm/pkg/surface"
 )
 
-
 var (
-    knownSurfaceFileName = "discovered-surface.yaml"
-	knownIssuesFileName = "discovered-issues.yaml"
-	datafileHeader = "## This is a program-generated data file. Do not edit. ##"
+	knownSurfaceFileName = "discovered-surface.yaml"
+	knownIssuesFileName  = "discovered-issues.yaml"
+	datafileHeader       = "## This is a program-generated data file. Do not edit. ##"
 )
 
 type DataFiles struct {
 	KnownSurface surface.Surface
-	 // knownIssues Issues TODO
+	// knownIssues Issues TODO
 }
 
-func New(dataFolder string) (d *DataFiles, fileMissing bool, err error){
+func New(dataFolder string) (d *DataFiles, fileMissing bool, err error) {
 	knownSurfaceFilePath := path.Join(dataFolder, knownSurfaceFileName)
 
 	// check if the directory exists
@@ -30,7 +29,7 @@ func New(dataFolder string) (d *DataFiles, fileMissing bool, err error){
 
 	fileMissing, err = initFile(knownSurfaceFilePath)
 	if err != nil {
-		return 
+		return
 	}
 
 	knownSurfaceData, err := parseKnownSurface(knownSurfaceFilePath)
@@ -44,15 +43,14 @@ func New(dataFolder string) (d *DataFiles, fileMissing bool, err error){
 	return
 }
 
-func (d *DataFiles) Summary() string{
+func (d *DataFiles) Summary() string {
 	return fmt.Sprintf(
 		"Known surface elements discovered in the past: {Domains[%d], IPs[%d], Endpoints[%d]}",
 		len(d.KnownSurface.Domains),
 		len(d.KnownSurface.IPs),
 		len(d.KnownSurface.URLs),
-		)
+	)
 }
-
 
 func initFile(filePath string) (fileMissing bool, err error) {
 	// Check if file exists
@@ -68,12 +66,12 @@ func initFile(filePath string) (fileMissing bool, err error) {
 		if err != nil {
 			return true, fmt.Errorf("failed to write content to file %s: %w", filePath, err)
 		}
-		
+
 		return true, nil
 	} else if err != nil {
 		return false, fmt.Errorf("failed to check if file exists at %s: %w", filePath, err)
 	}
-	
+
 	// File already exists
 	return false, nil
 }

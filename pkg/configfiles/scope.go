@@ -2,38 +2,38 @@ package configfiles
 
 import (
 	"fmt"
-	"os"
 	"github.com/robalb/tinyasm/pkg/surface"
 	"github.com/robalb/tinyasm/pkg/validation"
 	"gopkg.in/yaml.v3"
+	"os"
 )
 
 type scopeFileData struct {
-    Scope surface.Surface `yaml:"scope"`
+	Scope      surface.Surface `yaml:"scope"`
 	Exclusions surface.Surface `yaml:"exclusions,omitempty"`
 }
 
-func parseScope(filePath string) (*scopeFileData, error){
-    data, err := os.ReadFile(filePath)
-    if err != nil {
-        return nil, fmt.Errorf("Failed to read scope file at %s: %w", filePath, err)
-    }
+func parseScope(filePath string) (*scopeFileData, error) {
+	data, err := os.ReadFile(filePath)
+	if err != nil {
+		return nil, fmt.Errorf("Failed to read scope file at %s: %w", filePath, err)
+	}
 
-    config := scopeFileData{
-        Scope: surface.Surface{
-            Domains: []string{},
-            IPs:     []string{},
-            URLs:    []string{},
-        },
-        Exclusions: surface.Surface{
-            Domains: []string{},
-            IPs:     []string{},
-            URLs:    []string{},
-        },
-    }
-    if err := yaml.Unmarshal(data, &config); err != nil {
+	config := scopeFileData{
+		Scope: surface.Surface{
+			Domains: []string{},
+			IPs:     []string{},
+			URLs:    []string{},
+		},
+		Exclusions: surface.Surface{
+			Domains: []string{},
+			IPs:     []string{},
+			URLs:    []string{},
+		},
+	}
+	if err := yaml.Unmarshal(data, &config); err != nil {
 		return nil, fmt.Errorf("Failed to parse scope file at %s: Invalid Syntax: %w", filePath, err)
-    }
+	}
 
 	// Check for empty scope
 	s := config.Scope
@@ -53,8 +53,6 @@ func parseScope(filePath string) (*scopeFileData, error){
 
 	return &config, nil
 }
-
-
 
 func validateSurface(s *surface.Surface) error {
 
