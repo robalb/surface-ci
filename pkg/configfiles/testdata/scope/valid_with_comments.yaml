@@ -1,0 +1,13 @@
+# a comment
+scope:
+  domains:
+    # example.com 
+    - example.com
+  urls:
+    - https://example.com/api
+    - "http://test.com"
+
+# another comment
+exclusions:
+  domains:
+    - "bad.domain.example.com"

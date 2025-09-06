@@ -1,0 +1,17 @@
+scope:
+  domains:
+    - example.com
+  ips:
+    - 192.168.0.0/16
+  urls:
+    - https://example.com/api
+exclusions:
+  domains:
+    - admin.example.com
+    - internal.example.com
+  ips:
+    - 192.168.1.100
+    - 192.168.2.0/24
+  urls:
+    - https://example.com/admin
+    - example.com/internal

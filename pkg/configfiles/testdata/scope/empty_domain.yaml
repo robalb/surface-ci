@@ -1,0 +1,9 @@
+scope:
+  domains:
+    - test.test.com
+    - ""
+    - test.com
+  ips:
+    - 192.168.1.1
+  urls:
+    - https://example.com/api

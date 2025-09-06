@@ -1,0 +1,6 @@
+scope:
+  domains:
+    - example.com
+  ips:
+    - 10.2.12.1
+

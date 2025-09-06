@@ -1,0 +1,5 @@
+scope:
+  domains:
+    - example.com
+    - sub.example.org
+    - test-site.co.uk

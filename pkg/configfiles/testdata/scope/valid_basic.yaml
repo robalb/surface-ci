@@ -1,0 +1,11 @@
+scope:
+  domains:
+    - example.com
+    - test-domain.org
+    - 
+  ips:
+    - 192.168.1.1
+    - 10.0.0.0/24
+  urls:
+    - https://example.com/api
+    - example.org/endpoint
