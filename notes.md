@@ -196,6 +196,19 @@ remove(exclusions, to:PIPE)
 
 
 
+### pipeline interface ideas:
+
+the pipeline could be composed of several operators, with data 
+flowing trough them in a functional manner.
+
+each operator could conform to some specific interface, and we could have a list 
+of all the operators defined somewhere. 
+
+if the interface includes the []configfiles, and validateConfig(),
+we could then print at startup the config files expected or the config files read.
+and we could have a centralized way to validate config files at startup.
+
+
 
 
 

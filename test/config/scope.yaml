@@ -1,6 +1,7 @@
 scope:
   domains:
-    - example.com
+    - halb.it
+    - tomh.it
   ips:
     - 10.2.12.1
 

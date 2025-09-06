@@ -18,8 +18,8 @@ type EnvConfig struct {
 
 func defaultEnvConfig() EnvConfig {
 	return EnvConfig{
-		ConfigFolder: "./",
-		DataFolder:   "./data",
+		ConfigFolder: "./test/config", //TODO: use ./ as default
+		DataFolder:   "./test/data",   //TODO: use ./data as default
 		SecretTest:   "",
 	}
 }

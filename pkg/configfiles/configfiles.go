@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"path"
 
-	"github.com/robalb/tinyasm/pkg/surface"
+	"github.com/robalb/tinyasm/pkg/pipeline"
 )
 
 var (
@@ -15,8 +15,8 @@ var (
 )
 
 type ConfigFiles struct {
-	Scope      surface.Surface
-	Exclusions surface.Surface
+	Scope      pipeline.Surface
+	Exclusions pipeline.Surface
 	//IgnoreIssues IgnoreIssues //TODO
 	//Config Config //todo
 }

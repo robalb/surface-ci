@@ -4,13 +4,13 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/robalb/tinyasm/pkg/surface"
+	"github.com/robalb/tinyasm/pkg/pipeline"
 	"github.com/robalb/tinyasm/pkg/validation"
 	"gopkg.in/yaml.v3"
 )
 
 type knownSurfaceFileData struct {
-	KnownSurface surface.Surface `yaml:"known_surface"`
+	KnownSurface pipeline.Surface `yaml:"surface"`
 }
 
 func parseKnownSurface(filePath string) (*knownSurfaceFileData, error) {
@@ -20,7 +20,7 @@ func parseKnownSurface(filePath string) (*knownSurfaceFileData, error) {
 	}
 
 	surface := knownSurfaceFileData{
-		KnownSurface: surface.Surface{
+		KnownSurface: pipeline.Surface{
 			Domains: []string{},
 			IPs:     []string{},
 			URLs:    []string{},

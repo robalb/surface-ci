@@ -3,7 +3,7 @@ package datafiles
 
 import (
 	"fmt"
-	"github.com/robalb/tinyasm/pkg/surface"
+	"github.com/robalb/tinyasm/pkg/pipeline"
 	"os"
 	"path"
 )
@@ -15,7 +15,7 @@ var (
 )
 
 type DataFiles struct {
-	KnownSurface surface.Surface
+	KnownSurface pipeline.Surface
 	// knownIssues Issues TODO
 }
 

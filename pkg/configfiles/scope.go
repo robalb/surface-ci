@@ -2,15 +2,15 @@ package configfiles
 
 import (
 	"fmt"
-	"github.com/robalb/tinyasm/pkg/surface"
+	"github.com/robalb/tinyasm/pkg/pipeline"
 	"github.com/robalb/tinyasm/pkg/validation"
 	"gopkg.in/yaml.v3"
 	"os"
 )
 
 type scopeFileData struct {
-	Scope      surface.Surface `yaml:"scope"`
-	Exclusions surface.Surface `yaml:"exclusions,omitempty"`
+	Scope      pipeline.Surface `yaml:"scope"`
+	Exclusions pipeline.Surface `yaml:"exclusions,omitempty"`
 }
 
 func parseScope(filePath string) (*scopeFileData, error) {
@@ -20,12 +20,12 @@ func parseScope(filePath string) (*scopeFileData, error) {
 	}
 
 	config := scopeFileData{
-		Scope: surface.Surface{
+		Scope: pipeline.Surface{
 			Domains: []string{},
 			IPs:     []string{},
 			URLs:    []string{},
 		},
-		Exclusions: surface.Surface{
+		Exclusions: pipeline.Surface{
 			Domains: []string{},
 			IPs:     []string{},
 			URLs:    []string{},
@@ -54,7 +54,7 @@ func parseScope(filePath string) (*scopeFileData, error) {
 	return &config, nil
 }
 
-func validateSurface(s *surface.Surface) error {
+func validateSurface(s *pipeline.Surface) error {
 
 	// Validate domains
 	for i, domain := range s.Domains {

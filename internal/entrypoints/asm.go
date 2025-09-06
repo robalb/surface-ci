@@ -64,7 +64,7 @@ func Asm(
 			"suggestion", "If this is not the fist execution, make sure the data folder is being saved properly.")
 	}
 
-	pipeline.Run(
+	pipeline.RunSurfaceDiscovery(
 		ctx,
 		logger,
 		&dataFiles.KnownSurface,

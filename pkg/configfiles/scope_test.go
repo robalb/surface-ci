@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/robalb/tinyasm/pkg/surface"
+	"github.com/robalb/tinyasm/pkg/pipeline"
 )
 
 func TestBadConfigurations(t *testing.T) {
@@ -47,7 +47,7 @@ func TestValidConfigurations(t *testing.T) {
 			name:     "basic_valid_config",
 			filePath: "testdata/scope/valid_basic.yaml",
 			expectedData: &scopeFileData{
-				Scope: surface.Surface{
+				Scope: pipeline.Surface{
 					Domains: []string{"example.com", "test-domain.org"},
 					IPs:     []string{"192.168.1.1", "10.0.0.0/24"},
 					URLs:    []string{"https://example.com/api", "example.org/endpoint"},
@@ -58,7 +58,7 @@ func TestValidConfigurations(t *testing.T) {
 			name:     "valid_with_comments",
 			filePath: "testdata/scope/valid_with_comments.yaml",
 			expectedData: &scopeFileData{
-				Scope: surface.Surface{
+				Scope: pipeline.Surface{
 					Domains: []string{"example.com"},
 					IPs:     []string{},
 					URLs:    []string{"https://example.com/api", "http://test.com"},
@@ -69,7 +69,7 @@ func TestValidConfigurations(t *testing.T) {
 			name:     "domains_only",
 			filePath: "testdata/scope/valid_domains_only.yaml",
 			expectedData: &scopeFileData{
-				Scope: surface.Surface{
+				Scope: pipeline.Surface{
 					Domains: []string{"example.com", "sub.example.org", "test-site.co.uk"},
 					IPs:     []string{},
 					URLs:    []string{},
@@ -80,12 +80,12 @@ func TestValidConfigurations(t *testing.T) {
 			name:     "with_exclusions",
 			filePath: "testdata/scope/valid_with_exclusions.yaml",
 			expectedData: &scopeFileData{
-				Scope: surface.Surface{
+				Scope: pipeline.Surface{
 					Domains: []string{"example.com"},
 					IPs:     []string{"192.168.0.0/16"},
 					URLs:    []string{"https://example.com/api"},
 				},
-				Exclusions: surface.Surface{
+				Exclusions: pipeline.Surface{
 					Domains: []string{"admin.example.com", "internal.example.com"},
 					IPs:     []string{"192.168.1.100", "192.168.2.0/24"},
 					URLs:    []string{"https://example.com/admin", "example.com/internal"},
@@ -96,7 +96,7 @@ func TestValidConfigurations(t *testing.T) {
 			name:     "ipv6_addresses",
 			filePath: "testdata/scope/valid_ipv6.yaml",
 			expectedData: &scopeFileData{
-				Scope: surface.Surface{
+				Scope: pipeline.Surface{
 					Domains: []string{"example.com"},
 					IPs:     []string{"2001:db8::1", "2001:db8::/64", "::1"},
 					URLs:    []string{"https://example.com/api"},
@@ -107,7 +107,7 @@ func TestValidConfigurations(t *testing.T) {
 			name:     "minimal_valid",
 			filePath: "testdata/scope/valid_minimal.yaml",
 			expectedData: &scopeFileData{
-				Scope: surface.Surface{
+				Scope: pipeline.Surface{
 					Domains: []string{"example.com"},
 					IPs:     []string{},
 					URLs:    []string{},

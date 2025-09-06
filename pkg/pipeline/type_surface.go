@@ -1,4 +1,4 @@
-package surface
+package pipeline
 
 type Surface struct {
 	Domains []string `yaml:"domains"`
