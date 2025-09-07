@@ -64,6 +64,43 @@ func RunSurfaceDiscovery(
 		//insert into our dns pipeline only domains that resolve to something
 		//even when domains resolve to something, make sure there are no wildcard dns 
 		//before insering a bunch of allucinations. it can be tested by resolving random-letter subdomains
+		fuzzDomains, err := Alterx(pipeline.Domains)
+		if err != nil {
+			logger.Error("alterx fail", "error", err)
+			return
+		}
+		logger.Info("pipeline - after fuzz", "domains", fuzzDomains)
+
+		//find wildcard:
+		// in a situation were the following wildcards exist
+		// *.a.example.com
+		// *.test.com
+		// and we are given the following domains list:
+		//
+		// a.example.com 
+		// b.example.com 
+		// b.a.example.com
+		// c.a.example.com
+		// a.test.com
+		// b.test.com
+		//
+		// we expect to receive this:
+		// a.example.com
+		// a.test.com
+		// b.test.com
+		// note how in the case of test.com the real wildcard is *.test.com, but we could not
+		// detect that becasuse test.com is not in scope.
+		// If we only have a subdomain in scope, the parent domain
+		// is not intended to be in scope, we are not allowed to go there.
+
+		//TODO STEPS
+		//wildcards := FindWildcard()
+		//fuzzedWildcards := findSubdomains(fuzzed, wildcards) //results will include the subdomain itself
+		//validFuzzed := subtract(fuzzed, fuzzedWildcards)
+		//insert_safe(validFuzzed)
+
+
+
 	}
 
 

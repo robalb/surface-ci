@@ -4,7 +4,15 @@ go 1.24.0
 
 toolchain go1.24.7
 
-require gopkg.in/yaml.v3 v3.0.1
+require (
+	github.com/projectdiscovery/alterx v0.0.6
+	gopkg.in/yaml.v3 v3.0.1
+)
+
+require (
+	github.com/projectdiscovery/fasttemplate v0.0.2 // indirect
+	github.com/valyala/bytebufferpool v1.0.0 // indirect
+)
 
 require (
 	aead.dev/minisign v0.2.0 // indirect
@@ -75,7 +83,7 @@ require (
 	github.com/projectdiscovery/dnsx v1.2.2 // indirect
 	github.com/projectdiscovery/fastdialer v0.4.1 // indirect
 	github.com/projectdiscovery/goflags v0.1.74 // indirect
-	github.com/projectdiscovery/gologger v1.1.54 // indirect
+	github.com/projectdiscovery/gologger v1.1.54
 	github.com/projectdiscovery/hmap v0.0.89 // indirect
 	github.com/projectdiscovery/machineid v0.0.0-20240226150047-2e2c51e35983 // indirect
 	github.com/projectdiscovery/networkpolicy v0.1.15 // indirect
@@ -118,7 +126,7 @@ require (
 	golang.org/x/crypto v0.36.0 // indirect
 	golang.org/x/exp v0.0.0-20250106191152-7588d65b2ba8 // indirect
 	golang.org/x/mod v0.22.0 // indirect
-	golang.org/x/net v0.38.0 // indirect
+	golang.org/x/net v0.38.0
 	golang.org/x/oauth2 v0.11.0 // indirect
 	golang.org/x/sync v0.12.0 // indirect
 	golang.org/x/sys v0.31.0 // indirect

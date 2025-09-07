@@ -227,3 +227,5 @@ the output of each module would be useful
 the risk of going out of scope is mitigated by the fact that we don't run invasive scans.
 still, it would be nice if we could add updated lists of known companies to the exclusions.
 e.g: github
+
+
