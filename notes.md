@@ -209,6 +209,21 @@ we could then print at startup the config files expected or the config files rea
 and we could have a centralized way to validate config files at startup.
 
 
+for an initial prototype pipeline operators can be regular functions, composed manually.
+If we eventually want to implement a GUI pipeline compiler, we can 
+define all operators as a struct with a execute function, all implementing the operator interface.
+the execution function wil ltake as imput the pipeline memory map, and maybe some 
+indexes into that map for input output. The details are not important now, 
+just the general idea of having a dynamic runtime with typed data.
 
 
+some of the operators could be designed to print the results, and the count of results.
+The web interface could be used in debug mode to start actual scans, and in that scenario 
+the output of each module would be useful
 
+
+### going out of scope
+
+the risk of going out of scope is mitigated by the fact that we don't run invasive scans.
+still, it would be nice if we could add updated lists of known companies to the exclusions.
+e.g: github

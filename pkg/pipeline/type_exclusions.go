@@ -47,6 +47,9 @@ func (e *Exclusions) Insert(s *Surface) {
 // Contains_domain checks if a domain is in the exclusions
 func (e *Exclusions) Contains_domain(domain string) bool {
 	_, exists := e.Domains[normalize_domain(domain)]
+
+	//TODO: if domain is not a TLD, check if its parent
+    //      is in the exclusion list.
 	return exists
 }
 
