@@ -10,30 +10,30 @@ import (
 func URLExtractIPs(urls []string) []string {
 	// Use a map to track unique IPs
 	uniqueIPs := make(map[string]struct{})
-	
+
 	for _, rawURL := range urls {
 		// If URL doesn't have a scheme, add one to make parsing work
 		parsableURL := rawURL
-		if !strings.HasPrefix(strings.ToLower(parsableURL), "http://") && 
-		   !strings.HasPrefix(strings.ToLower(parsableURL), "https://") {
+		if !strings.HasPrefix(strings.ToLower(parsableURL), "http://") &&
+			!strings.HasPrefix(strings.ToLower(parsableURL), "https://") {
 			parsableURL = "https://" + parsableURL
 		}
-		
+
 		// Parse the URL
 		parsedURL, err := url.Parse(parsableURL)
 		if err != nil {
 			// Skip invalid URLs
 			continue
 		}
-		
+
 		// Extract the host part
 		host := parsedURL.Hostname() // This removes any port number
-		
+
 		// Skip empty hosts
 		if host == "" {
 			continue
 		}
-		
+
 		// Check if the host is an IPv6 address
 		// net.ParseIP can handle IPv6 addresses without brackets
 		ip := net.ParseIP(host)
@@ -42,7 +42,7 @@ func URLExtractIPs(urls []string) []string {
 			uniqueIPs[host] = struct{}{}
 			continue
 		}
-		
+
 		// Check if it's an IPv6 in brackets (which might not be properly parsed by Hostname())
 		if strings.HasPrefix(host, "[") && strings.HasSuffix(host, "]") {
 			ipv6 := host[1 : len(host)-1]
@@ -51,12 +51,12 @@ func URLExtractIPs(urls []string) []string {
 			}
 		}
 	}
-	
+
 	// Convert the map keys to a slice
 	ips := make([]string, 0, len(uniqueIPs))
 	for ip := range uniqueIPs {
 		ips = append(ips, ip)
 	}
-	
+
 	return ips
 }

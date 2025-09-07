@@ -67,11 +67,11 @@ func TestExtractDomains(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			result := URLExtractDomains(tt.urls)
-			
+
 			// Sort both slices for consistent comparison
 			sort.Strings(result)
 			sort.Strings(tt.expected)
-			
+
 			if !reflect.DeepEqual(result, tt.expected) {
 				t.Errorf("ExtractDomains() = %v, want %v", result, tt.expected)
 			}

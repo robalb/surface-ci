@@ -16,6 +16,7 @@ func Alterx(domains []string) ([]string, error) {
 	alterxOpts := &alterx.Options{
 		Domains: domains,
 		MaxSize: 1000,
+		Enrich:  true,
 		//TODO: configure words and patters using an LLM
 	}
 

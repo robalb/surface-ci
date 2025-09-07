@@ -72,22 +72,22 @@ func TestFilterSubdomains(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			result, err := FilterSubdomains(tt.input)
-			
+
 			// Check error expectation
 			if (err != nil) != tt.wantErr {
 				t.Errorf("FilterSubdomains() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			
+
 			// If we expect an error, don't check the result
 			if tt.wantErr {
 				return
 			}
-			
+
 			// Sort results for consistent comparison
 			sort.Strings(result)
 			sort.Strings(tt.expected)
-			
+
 			if !reflect.DeepEqual(result, tt.expected) {
 				t.Errorf("FilterSubdomains() = %v, want %v", result, tt.expected)
 			}

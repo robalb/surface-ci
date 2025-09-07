@@ -80,10 +80,10 @@ require (
 	github.com/projectdiscovery/blackrock v0.0.1 // indirect
 	github.com/projectdiscovery/cdncheck v1.1.23 // indirect
 	github.com/projectdiscovery/chaos-client v0.5.2 // indirect
-	github.com/projectdiscovery/dnsx v1.2.2 // indirect
+	github.com/projectdiscovery/dnsx v1.2.2
 	github.com/projectdiscovery/fastdialer v0.4.1 // indirect
 	github.com/projectdiscovery/goflags v0.1.74 // indirect
-	github.com/projectdiscovery/gologger v1.1.54
+	github.com/projectdiscovery/gologger v1.1.54 // indirect
 	github.com/projectdiscovery/hmap v0.0.89 // indirect
 	github.com/projectdiscovery/machineid v0.0.0-20240226150047-2e2c51e35983 // indirect
 	github.com/projectdiscovery/networkpolicy v0.1.15 // indirect
