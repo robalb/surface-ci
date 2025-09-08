@@ -10,11 +10,13 @@ import (
 	"golang.org/x/net/publicsuffix"
 )
 
+// DNSLookupFunc defines the signature for a DNS lookup functions
+type DNSLookupFunc func(domain string) ([]string, error)
+
 // FilterActiveDomains takes a list of domains and returns those with valid DNS records
 // If a DNSCache is provided, it will check the cache before making DNS queries
 // and update the cache with successful resolutions
 func DnsxFilterActive(domains []string, cache *DNSCache) []string {
-
 	// First, check all domains against the cache
 	var validDomains []string
 	var domainsToResolve []string
@@ -60,8 +62,6 @@ func DnsxFilterActive(domains []string, cache *DNSCache) []string {
 }
 
 
-// DNSLookupFunc defines the signature for DNS lookup functions
-type DNSLookupFunc func(domain string) ([]string, error)
 
 // DnsxFilterWildcards takes a list of domains and returns those that
 // are the root of a wildcard domain.
@@ -77,7 +77,10 @@ func DnsxFilterWildcards(domains []string, cache *DNSCache) []string {
 }
 
 func dnsxFilterWildcards(domains []string, cache *DNSCache, dnsLookup DNSLookupFunc) []string {
-	// What does it mean to find wildcard?
+	// ips, _ := dnsLookup(domains[0])
+	// return ips
+
+	// What does it mean to find wildcards?
 	// in a situation were the following wildcards exist:
 	// *.a.example.com
 	// *.test.com
@@ -103,6 +106,8 @@ func dnsxFilterWildcards(domains []string, cache *DNSCache, dnsLookup DNSLookupF
 	// Group domains by base domain (effective TLD+1)
 	domainGroups := make(map[string][]string)
 
+	wildcardDomains := []string{}
+
 	for _, domain := range domains {
 		baseDomain, err := publicsuffix.EffectiveTLDPlusOne(domain)
 		if err != nil {
@@ -111,8 +116,6 @@ func dnsxFilterWildcards(domains []string, cache *DNSCache, dnsLookup DNSLookupF
 		domainGroups[baseDomain] = append(domainGroups[baseDomain], domain)
 	}
 
-	var wildcardDomains []string
-
 	// Process each group
 	for _, group := range domainGroups {
 		// Sort by depth (number of dots), ascending (process parents first)
@@ -120,14 +123,11 @@ func dnsxFilterWildcards(domains []string, cache *DNSCache, dnsLookup DNSLookupF
 			return countDots(group[i]) < countDots(group[j])
 		})
 
-		// Keep track of found wildcards to skip their children
-		var wildcardParents []string
-
 		// Check each domain
 		for _, domain := range group {
 			// Skip if this domain is a child of a known wildcard
 			shouldSkip := false
-			for _, parent := range wildcardParents {
+			for _, parent := range wildcardDomains {
 				if isSubdomain(domain, parent) {
 					shouldSkip = true
 					break
@@ -139,13 +139,14 @@ func dnsxFilterWildcards(domains []string, cache *DNSCache, dnsLookup DNSLookupF
 			}
 
 			// Generate a random subdomain to test
-			randomPart := strings.Replace(uuid.New().String(), "-", "", -1)
+			randomPart := strings.ReplaceAll(uuid.New().String(), "-", "")
 			testDomain := fmt.Sprintf("%s.%s", randomPart, domain)
 
 			// Check if the random subdomain resolves
 			ips, found := cache.Get(testDomain)
 			if !found {
-				ips, err := dnsLookup(testDomain)
+				var err error
+				ips, err = dnsLookup(testDomain)
  				if err != nil {
 					ips = []string{}
 				}
@@ -155,7 +156,7 @@ func dnsxFilterWildcards(domains []string, cache *DNSCache, dnsLookup DNSLookupF
 			// If the random subdomain resolves, we've found a wildcard
 			if len(ips) > 0 {
 				wildcardDomains = append(wildcardDomains, domain)
-				wildcardParents = append(wildcardParents, domain)
+				fmt.Printf("  - resolved! %v \n", wildcardDomains )
 			}
 		}
 	}
