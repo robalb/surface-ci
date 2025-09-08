@@ -61,8 +61,6 @@ func DnsxFilterActive(domains []string, cache *DNSCache) []string {
 	return validDomains
 }
 
-
-
 // DnsxFilterWildcards takes a list of domains and returns those that
 // are the root of a wildcard domain.
 func DnsxFilterWildcards(domains []string, cache *DNSCache) []string {
@@ -147,7 +145,7 @@ func dnsxFilterWildcards(domains []string, cache *DNSCache, dnsLookup DNSLookupF
 			if !found {
 				var err error
 				ips, err = dnsLookup(testDomain)
- 				if err != nil {
+				if err != nil {
 					ips = []string{}
 				}
 				cache.Set(testDomain, ips) // Cache the result
@@ -156,7 +154,7 @@ func dnsxFilterWildcards(domains []string, cache *DNSCache, dnsLookup DNSLookupF
 			// If the random subdomain resolves, we've found a wildcard
 			if len(ips) > 0 {
 				wildcardDomains = append(wildcardDomains, domain)
-				fmt.Printf("  - resolved! %v \n", wildcardDomains )
+				fmt.Printf("  - resolved! %v \n", wildcardDomains)
 			}
 		}
 	}

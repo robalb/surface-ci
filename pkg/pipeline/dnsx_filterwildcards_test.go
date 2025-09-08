@@ -1,8 +1,8 @@
 package pipeline
 
 import (
-	"slices"
 	"reflect"
+	"slices"
 	"sort"
 	"testing"
 )
@@ -14,7 +14,7 @@ func TestDnsxFilterWildcards(t *testing.T) {
 		expected     []string
 
 		wildcards    []string
-	    unregistered []string
+		unregistered []string
 	}{
 		{
 			name: "Basic wildcard detection",
@@ -28,7 +28,7 @@ func TestDnsxFilterWildcards(t *testing.T) {
 			},
 			wildcards: []string{
 				"a.example.com", // *.a.example.com is a wildcard
-				"test.com",    // *.test.com is a wildcard
+				"test.com",      // *.test.com is a wildcard
 			},
 			unregistered: []string{
 				"example.com",
@@ -49,11 +49,122 @@ func TestDnsxFilterWildcards(t *testing.T) {
 				"dev.test.org",
 			},
 			unregistered: []string{},
+			wildcards:    []string{},
+			expected:     []string{},
+		},
+
+		{
+			name:         "Empty domain list",
+			inputDomains: []string{},
+			wildcards:    []string{},
+			unregistered: []string{},
+			expected:     []string{},
+		},
+		{
+			name: "All domains are wildcards",
+			inputDomains: []string{
+				"example.com",
+				"test.com",
+				"domain.org",
+			},
+			wildcards: []string{
+				"example.com",
+				"test.com",
+				"domain.org",
+			},
+			unregistered: []string{},
+			expected: []string{
+				"example.com",
+				"test.com",
+				"domain.org",
+			},
+		},
+		{
+			name: "Nested wildcards",
+			inputDomains: []string{
+				"example.com",
+				"sub.example.com",
+				"deep.sub.example.com",
+				"verydeep.deep.sub.example.com",
+			},
+			wildcards: []string{
+				"example.com",
+				"sub.example.com",
+			},
+			unregistered: []string{},
+			expected: []string{
+				"example.com",
+				// sub.example.com shouldn't be detected because it's a child of example.com
+			},
+		},
+		{
+			name: "Multiple TLDs with similar prefixes",
+			inputDomains: []string{
+				"example.com",
+				"example.org",
+				"example.net",
+				"sub.example.com",
+				"sub.example.org",
+			},
+			wildcards: []string{
+				"example.com",
+				"example.org",
+			},
+			unregistered: []string{},
+			expected: []string{
+				"example.com",
+				"example.org",
+			},
+		},
+		{
+			name: "Single domain",
+			inputDomains: []string{
+				"single.com",
+			},
+			wildcards: []string{
+				"single.com",
+			},
+			unregistered: []string{},
+			expected: []string{
+				"single.com",
+			},
+		},
+		{
+			name: "Partial wildcard domain structure",
+			inputDomains: []string{
+				"a.example.com",
+				"b.example.com",
+				"a.test.com",
+				"b.test.com",
+				"c.wildcard.net",
+			},
+			wildcards: []string{
+				"test.com",
+			},
+			unregistered: []string{
+				"example.com",
+				"b.example.com",
+			},
+			expected: []string{
+				"a.test.com",
+				"b.test.com",
+			},
+		},
+		{
+			name: "All unregistered domains",
+			inputDomains: []string{
+				"notfound.com",
+				"doesntexist.org",
+			},
 			wildcards: []string{},
-			expected:  []string{},
+			unregistered: []string{
+				"notfound.com",
+				"doesntexist.org",
+			},
+			expected: []string{},
 		},
 	}
-	
+
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// Mock dns lookup function
@@ -67,27 +178,27 @@ func TestDnsxFilterWildcards(t *testing.T) {
 
 				// if it's in the unregistered list, return nothing
 				if slices.Contains(tt.unregistered, domain) {
-					return []string{}, nil 
+					return []string{}, nil
 				}
 
 				// if it's in the input domains, return a dummy ip.
 				if slices.Contains(tt.inputDomains, domain) {
 					return []string{"192.0.3.1"}, nil
 				}
-				
+
 				// anything else falls here
 				return []string{}, nil
 			}
-			
+
 			cache := NewDNSCache()
-			
+
 			// Run the function with our mock lookup
 			got := dnsxFilterWildcards(tt.inputDomains, cache, mockLookup)
-			
+
 			// Sort both slices to ensure order doesn't matter
 			sort.Strings(got)
 			sort.Strings(tt.expected)
-			
+
 			// Compare results
 			if !reflect.DeepEqual(got, tt.expected) {
 				t.Errorf("DnsxFindWildcards() = %v, want %v", got, tt.expected)
@@ -95,8 +206,3 @@ func TestDnsxFilterWildcards(t *testing.T) {
 		})
 	}
 }
-
-
-
-
-
