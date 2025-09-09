@@ -8,10 +8,10 @@ import (
 	"golang.org/x/net/publicsuffix"
 )
 
-// FilterSubdomains takes a slice of domains and returns a new slice
+// TrimSubdomains takes a slice of domains and returns a new slice
 // where subdomains of lower hierarchies have been filtered out
 // for example: [a.sub.example.com, sub.example.com] -> [sub.example.com]
-func FilterSubdomains(domains []string) ([]string, error) {
+func TrimSubdomains(domains []string) ([]string, error) {
 	if len(domains) == 0 {
 		return []string{}, nil
 	}

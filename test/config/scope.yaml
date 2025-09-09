@@ -1,7 +1,7 @@
 scope:
   domains:
     - halb.it
-    - tomh.it
+    #- tomh.it
   ips:
     - 10.2.12.1
 

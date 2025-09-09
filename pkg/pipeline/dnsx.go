@@ -74,32 +74,30 @@ func DnsxFilterWildcards(domains []string, cache *DNSCache) []string {
 	return dnsxFilterWildcards(domains, cache, defaultDNSLookup)
 }
 
+// TODO: set a depth limit
+// wildcard discovery algorythm.
+// in a situation were the following wildcards exist:
+// *.a.example.com
+// *.test.com
+//
+// and we are given the following domains list:
+// a.example.com
+// b.example.com
+// b.a.example.com
+// c.a.example.com
+// a.test.com
+// b.test.com
+//
+// we expect to receive this:
+// a.example.com
+// a.test.com
+// b.test.com
+//
+// note how in the case of test.com the real wildcard is *.test.com, but we could not
+// detect that becasuse test.com is not in scope.
+// If we only have a subdomain in scope, the parent domain
+// is not intended to be in scope, we are not allowed to go there.
 func dnsxFilterWildcards(domains []string, cache *DNSCache, dnsLookup DNSLookupFunc) []string {
-	// ips, _ := dnsLookup(domains[0])
-	// return ips
-
-	// What does it mean to find wildcards?
-	// in a situation were the following wildcards exist:
-	// *.a.example.com
-	// *.test.com
-	//
-	// and we are given the following domains list:
-	// a.example.com
-	// b.example.com
-	// b.a.example.com
-	// c.a.example.com
-	// a.test.com
-	// b.test.com
-	//
-	// we expect to receive this:
-	// a.example.com
-	// a.test.com
-	// b.test.com
-	//
-	// note how in the case of test.com the real wildcard is *.test.com, but we could not
-	// detect that becasuse test.com is not in scope.
-	// If we only have a subdomain in scope, the parent domain
-	// is not intended to be in scope, we are not allowed to go there.
 
 	// Group domains by base domain (effective TLD+1)
 	domainGroups := make(map[string][]string)

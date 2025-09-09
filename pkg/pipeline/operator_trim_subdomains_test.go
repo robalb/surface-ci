@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestFilterSubdomains(t *testing.T) {
+func TestTrimSubdomains(t *testing.T) {
 	tests := []struct {
 		name     string
 		input    []string
@@ -71,7 +71,7 @@ func TestFilterSubdomains(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			result, err := FilterSubdomains(tt.input)
+			result, err := TrimSubdomains(tt.input)
 
 			// Check error expectation
 			if (err != nil) != tt.wantErr {
