@@ -59,13 +59,18 @@ func RunSurfaceDiscovery(
 		logger.Info("pipeline - subfinder", "domains", outDomains)
 	}
 
+	wildcards := DnsxFilterWildcards(pipeline.Domains, dnsCache)
+
 	//fuzzy search domains
 	{
 		//fuzzy generate domain names, based on alterx and LLM prompts
 		//insert into our dns pipeline only domains that resolve to something.
 		//even when domains resolve to something, make sure there are no wildcard dns
 		//to avoid false positives. it can be tested by resolving random strings
-		fuzzDomains, err := Alterx(pipeline.Domains)
+		unfuzzableDomains := SelectSubdomains(pipeline.Domains, wildcards)
+		fuzzableDomains := Subtract(pipeline.Domains, unfuzzableDomains)
+
+		fuzzDomains, err := Alterx(fuzzableDomains)
 		if err != nil {
 			logger.Error("alterx fail", "error", err)
 			return
@@ -74,7 +79,6 @@ func RunSurfaceDiscovery(
 
 		// exclude from our validation all fuzz domains that are part of wildcards domains,
 		// since they are untestable
-		wildcards := DnsxFilterWildcards(pipeline.Domains, dnsCache)
 		logger.Info("pipeline - widcards", "domains", wildcards)
 		untestableFuzzDomains := SelectSubdomains(fuzzDomains, wildcards)
 		logger.Info("pipeline - untestable", "domains", untestableFuzzDomains)
@@ -86,16 +90,21 @@ func RunSurfaceDiscovery(
 		logger.Info("pipeline - fuzz active dns", "domains", validFuzzed)
 		insert_safe_string(validFuzzed, exclusions.Contains_domain, &pipeline.Domains)
 
-
-		//TODO STEPS
-		// wildcards := DnsxFindWildcards(pipeline.Domains)
-		//fuzzedWildcards := selectSubdomains(fuzzed, wildcards) //results will include the subdomain itself
-		//validFuzzed := subtract(fuzzed, fuzzedWildcards)
-
 	}
 
 	// expand domains, ips, urls, list into active urls 
 	{
+		// we must run httpx two times: one with a surface set that only contains wildcard domains,
+		// and one with a surface set that does not contain wildcard domains.
+		// in NOwildcard mode, an http response is considered "discovered surface", and its url is put into the surface urls.
+		// in wildcard mode, all children of a specific wildcard are tested together, and only the domain 
+		// that receive a response deviating from the median response will be considered "discovered surface"
+		results, err := Httpx(pipeline, 2)
+		if err != nil {
+			logger.Error("alterx fail", "error", err)
+			return
+		}
+		logger.Info("httpx results", "results", results)
 
 	}
 

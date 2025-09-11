@@ -4,4 +4,7 @@ scope:
     #- tomh.it
   ips:
     - 10.2.12.1
+  urls:
+    - https://stats.halb.it
+
 
